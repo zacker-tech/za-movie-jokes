@@ -36,7 +36,7 @@ function JokesGenerator({ movieId, movieTitle, movieDescription }) {
           <Badge fontSize="0.9em" colorScheme="green" mr={1}>
             JOKE:
           </Badge>
-          <Text as="span">{joke.joke}</Text>
+          <Text as="span">{joke}</Text>
         </Text>
       )}
       <Button

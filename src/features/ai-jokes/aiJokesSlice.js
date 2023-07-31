@@ -5,7 +5,7 @@ import { OPENAI_COMPLETETIONS_API_URL } from "src/common/constants";
 const initialState = {
   rules: [{ name: "Joke Type", description: "Programmer" }],
   jokes: {
-    jokes: [],
+    jokes: {},
     status: "idle", // 'idle' / 'loading' / 'succeeded' / 'failed'
     error: null,
   },
@@ -79,15 +79,7 @@ const aiJokesSlice = createSlice({
       })
       .addCase(fetchJoke.fulfilled, (state, action) => {
         state.jokes.status = "succeeded";
-        const jokeIndex = state.jokes.jokes.findIndex(
-          (joke) => joke.movieId === action.payload.movieId
-        );
-
-        if (jokeIndex > -1) {
-          state.jokes.jokes[jokeIndex] = action.payload;
-        } else {
-          state.jokes.jokes.push(action.payload);
-        }
+        state.jokes.jokes[action.payload.movieId] = action.payload.joke;
       })
       .addCase(fetchJoke.rejected, (state, action) => {
         state.jokes.status = "failed";
@@ -99,7 +91,7 @@ const aiJokesSlice = createSlice({
 export const { ruleAdded, ruleRemoved } = aiJokesSlice.actions;
 
 export const selectJokeByMovieId = (state, movieId) =>
-  state.aiJokes.jokes.jokes.find((joke) => joke.movieId === movieId);
+  state.aiJokes.jokes.jokes[movieId];
 export const selectJokesStatus = (state) => state.aiJokes.jokes.status;
 export const selectJokesRules = (state) => state.aiJokes.rules;
 
